@@ -277,7 +277,7 @@ input, select, textarea, button {
 
 .main-nav {
   display: flex;
-  gap: 28px;
+  gap: 22px;
   font-size: 14px;
   font-weight: 500;
   color: var(--text-secondary);
@@ -2298,6 +2298,652 @@ body.cart-drawer-open {
   gap: 12px;
   justify-content: center;
   flex-wrap: wrap;
+}
+
+/* ============ B2B PAGE ============ */
+.b2b-stats {
+  background: var(--text-primary);
+  color: #fff;
+  padding: 32px 0;
+}
+
+.b2b-stats-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 32px;
+}
+
+.b2b-stat {
+  text-align: center;
+}
+
+.b2b-stat-value {
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: clamp(28px, 4vw, 42px);
+  line-height: 1;
+  color: var(--brand);
+  letter-spacing: -0.02em;
+  margin-bottom: 8px;
+}
+
+.b2b-stat-label {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.65);
+}
+
+.b2b-stat-value sup {
+  font-size: 60%;
+  vertical-align: super;
+  margin-left: 2px;
+}
+
+/* B2B Why / Value props */
+.b2b-why {
+  padding: var(--section-padding) 0;
+  background: var(--bg-base);
+}
+
+.b2b-why-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 24px;
+}
+
+.b2b-why-card {
+  padding: 36px 28px;
+  background: var(--bg-surface);
+  border: 1px solid var(--border-subtle);
+  border-top: 3px solid var(--brand);
+  transition: transform 0.3s var(--ease), box-shadow 0.3s var(--ease);
+}
+
+.b2b-why-card:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-md);
+}
+
+.b2b-why-number {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  color: var(--brand);
+  letter-spacing: 0.12em;
+  font-weight: 500;
+  margin-bottom: 16px;
+}
+
+.b2b-why-title {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 20px;
+  letter-spacing: -0.01em;
+  margin-bottom: 12px;
+  color: var(--text-primary);
+}
+
+.b2b-why-description {
+  font-size: 14px;
+  color: var(--text-secondary);
+  line-height: 1.7;
+}
+
+/* B2B Use cases */
+.b2b-usecases {
+  padding: var(--section-padding) 0;
+  background: var(--bg-surface);
+  border-top: 1px solid var(--border-subtle);
+}
+
+.b2b-usecases-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 24px;
+  margin-top: 48px;
+}
+
+.b2b-usecase {
+  display: grid;
+  grid-template-columns: 80px 1fr;
+  gap: 24px;
+  padding: 28px;
+  background: var(--bg-base);
+  border: 1px solid var(--border-subtle);
+  align-items: start;
+  transition: border-color 0.3s var(--ease);
+}
+
+.b2b-usecase:hover {
+  border-color: var(--brand);
+}
+
+.b2b-usecase-icon {
+  width: 64px;
+  height: 64px;
+  background: var(--brand-soft);
+  color: var(--brand);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 28px;
+  border: 1px solid var(--brand-line);
+}
+
+.b2b-usecase-title {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 18px;
+  letter-spacing: -0.01em;
+  margin-bottom: 8px;
+}
+
+.b2b-usecase-description {
+  font-size: 14px;
+  color: var(--text-secondary);
+  line-height: 1.6;
+}
+
+/* B2B Pricing tiers */
+.b2b-tiers {
+  padding: var(--section-padding) 0;
+  background: var(--bg-base);
+  border-top: 1px solid var(--border-subtle);
+}
+
+.b2b-tiers-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
+  margin-top: 48px;
+}
+
+.b2b-tier {
+  position: relative;
+  background: var(--bg-base);
+  border: 1px solid var(--border-medium);
+  padding: 40px 32px;
+  display: flex;
+  flex-direction: column;
+  transition: transform 0.3s var(--ease), box-shadow 0.3s var(--ease);
+}
+
+.b2b-tier:hover {
+  transform: translateY(-6px);
+  box-shadow: var(--shadow-lg);
+}
+
+.b2b-tier--featured {
+  border: 2px solid var(--brand);
+  background: linear-gradient(180deg, var(--brand-soft) 0%, var(--bg-base) 30%);
+}
+
+.b2b-tier-badge {
+  position: absolute;
+  top: -14px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: var(--brand);
+  color: #fff;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.12em;
+  padding: 6px 16px;
+  font-weight: 600;
+}
+
+.b2b-tier-quantity {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  letter-spacing: 0.1em;
+  color: var(--text-tertiary);
+  text-transform: uppercase;
+  margin-bottom: 12px;
+}
+
+.b2b-tier-name {
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: 28px;
+  letter-spacing: -0.02em;
+  margin-bottom: 16px;
+  color: var(--text-primary);
+}
+
+.b2b-tier-discount {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  margin-bottom: 28px;
+  padding-bottom: 28px;
+  border-bottom: 1px solid var(--border-subtle);
+}
+
+.b2b-tier-discount-value {
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: 56px;
+  line-height: 1;
+  color: var(--brand);
+  letter-spacing: -0.04em;
+}
+
+.b2b-tier-discount-label {
+  font-size: 13px;
+  color: var(--text-secondary);
+  font-weight: 500;
+}
+
+.b2b-tier-features {
+  list-style: none;
+  margin-bottom: 32px;
+  flex: 1;
+}
+
+.b2b-tier-features li {
+  padding: 10px 0;
+  font-size: 14px;
+  color: var(--text-secondary);
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+}
+
+.b2b-tier-features li::before {
+  content: "✓";
+  color: var(--brand);
+  font-weight: 700;
+  flex-shrink: 0;
+}
+
+.b2b-tier-features li.is-disabled {
+  color: var(--text-faint);
+}
+
+.b2b-tier-features li.is-disabled::before {
+  content: "·";
+  color: var(--text-faint);
+}
+
+/* B2B Process timeline */
+.b2b-process {
+  padding: var(--section-padding) 0;
+  background: var(--bg-surface);
+  border-top: 1px solid var(--border-subtle);
+}
+
+.b2b-process-steps {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 24px;
+  margin-top: 48px;
+  position: relative;
+}
+
+.b2b-process-steps::before {
+  content: "";
+  position: absolute;
+  top: 36px;
+  left: 12.5%;
+  right: 12.5%;
+  height: 2px;
+  background: var(--border-medium);
+  z-index: 0;
+}
+
+.b2b-process-step {
+  position: relative;
+  text-align: center;
+  z-index: 1;
+}
+
+.b2b-process-circle {
+  width: 72px;
+  height: 72px;
+  margin: 0 auto 20px;
+  background: var(--bg-base);
+  border: 2px solid var(--brand);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-mono);
+  font-weight: 600;
+  font-size: 20px;
+  color: var(--brand);
+  position: relative;
+  z-index: 2;
+}
+
+.b2b-process-title {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 17px;
+  margin-bottom: 8px;
+  color: var(--text-primary);
+  letter-spacing: -0.01em;
+}
+
+.b2b-process-description {
+  font-size: 13px;
+  color: var(--text-secondary);
+  line-height: 1.6;
+}
+
+/* B2B Inquiry form */
+.b2b-inquiry {
+  padding: var(--section-padding) 0;
+  background: var(--bg-base);
+  border-top: 1px solid var(--border-subtle);
+}
+
+.b2b-inquiry-layout {
+  display: grid;
+  grid-template-columns: 1fr 1.4fr;
+  gap: 64px;
+  align-items: start;
+}
+
+.b2b-inquiry-intro h2 {
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: clamp(32px, 4.5vw, 48px);
+  line-height: 1.05;
+  letter-spacing: -0.03em;
+  margin-bottom: 20px;
+  color: var(--text-primary);
+}
+
+.b2b-inquiry-intro p {
+  font-size: 16px;
+  color: var(--text-secondary);
+  line-height: 1.7;
+  margin-bottom: 32px;
+}
+
+.b2b-inquiry-contacts {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  border-top: 1px solid var(--border-subtle);
+  padding-top: 24px;
+}
+
+.b2b-inquiry-contact {
+  display: grid;
+  grid-template-columns: 100px 1fr;
+  gap: 12px;
+  font-size: 14px;
+  color: var(--text-primary);
+}
+
+.b2b-inquiry-contact-label {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--text-tertiary);
+  padding-top: 2px;
+}
+
+.b2b-inquiry-form {
+  background: var(--bg-surface);
+  border: 1px solid var(--border-subtle);
+  padding: 40px;
+}
+
+.form-checkbox-group {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.form-checkbox {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 14px;
+  background: var(--bg-base);
+  border: 1px solid var(--border-subtle);
+  cursor: pointer;
+  font-size: 14px;
+  transition: all 0.2s var(--ease);
+}
+
+.form-checkbox:hover {
+  border-color: var(--brand);
+}
+
+.form-checkbox input {
+  accent-color: var(--brand);
+}
+
+.form-checkbox input:checked + span {
+  font-weight: 600;
+  color: var(--brand);
+}
+
+.form-checkbox:has(input:checked) {
+  border-color: var(--brand);
+  background: var(--brand-soft);
+}
+
+/* Catalogue download CTA section */
+.b2b-catalogue {
+  padding: var(--section-padding) 0;
+  background: var(--text-primary);
+  color: #fff;
+  position: relative;
+  overflow: hidden;
+}
+
+.b2b-catalogue::before {
+  content: "";
+  position: absolute;
+  width: 800px;
+  height: 800px;
+  border-radius: 50%;
+  background: radial-gradient(circle, var(--brand-glow) 0%, transparent 70%);
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  filter: blur(80px);
+  opacity: 0.6;
+}
+
+.b2b-catalogue-inner {
+  position: relative;
+  z-index: 2;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 64px;
+  align-items: center;
+}
+
+.b2b-catalogue-image {
+  position: relative;
+  aspect-ratio: 4 / 5;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  perspective: 1000px;
+}
+
+.b2b-catalogue-pdf {
+  width: 75%;
+  height: 90%;
+  background: #fff;
+  position: relative;
+  box-shadow: 0 30px 80px rgba(0, 0, 0, 0.4);
+  transform: rotateY(-8deg) rotateX(2deg);
+  transition: transform 0.5s var(--ease);
+  padding: 32px;
+  display: flex;
+  flex-direction: column;
+}
+
+.b2b-catalogue-pdf:hover {
+  transform: rotateY(0deg) rotateX(0deg) translateY(-8px);
+}
+
+.b2b-catalogue-pdf-header {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.15em;
+  color: var(--brand);
+  margin-bottom: 24px;
+}
+
+.b2b-catalogue-pdf-title {
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: 32px;
+  line-height: 1;
+  letter-spacing: -0.03em;
+  color: var(--text-primary);
+  margin-bottom: 12px;
+}
+
+.b2b-catalogue-pdf-sub {
+  font-size: 11px;
+  color: var(--text-tertiary);
+  margin-bottom: 32px;
+}
+
+.b2b-catalogue-pdf-spec {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  color: var(--text-secondary);
+  line-height: 1.8;
+  flex: 1;
+  border-top: 1px solid var(--border-subtle);
+  padding-top: 16px;
+}
+
+.b2b-catalogue-pdf-footer {
+  font-family: var(--font-mono);
+  font-size: 9px;
+  color: var(--text-tertiary);
+  letter-spacing: 0.1em;
+  border-top: 1px solid var(--border-subtle);
+  padding-top: 12px;
+  margin-top: auto;
+}
+
+.b2b-catalogue-content .section-label {
+  color: var(--brand);
+}
+
+.b2b-catalogue-title {
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: clamp(36px, 5vw, 60px);
+  line-height: 1.05;
+  letter-spacing: -0.03em;
+  margin: 16px 0 20px;
+  color: #fff;
+}
+
+.b2b-catalogue-description {
+  font-size: 16px;
+  color: rgba(255, 255, 255, 0.7);
+  line-height: 1.7;
+  margin-bottom: 32px;
+}
+
+.b2b-catalogue-meta {
+  display: flex;
+  gap: 32px;
+  margin-bottom: 36px;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.5);
+}
+
+.b2b-catalogue-meta-item strong {
+  display: block;
+  font-family: var(--font-display);
+  color: #fff;
+  font-size: 22px;
+  letter-spacing: -0.01em;
+  font-weight: 700;
+  margin-top: 4px;
+  text-transform: none;
+}
+
+.b2b-catalogue-actions {
+  display: flex;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.b2b-catalogue .cta-button--ghost {
+  color: #fff;
+  border-color: rgba(255, 255, 255, 0.3);
+}
+
+.b2b-catalogue .cta-button--ghost:hover {
+  background: #fff;
+  color: var(--text-primary);
+}
+
+/* B2B page responsive */
+@media (max-width: 1024px) {
+  .b2b-stats-grid,
+  .b2b-why-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .b2b-tiers-grid,
+  .b2b-process-steps {
+    grid-template-columns: 1fr;
+  }
+
+  .b2b-process-steps::before {
+    display: none;
+  }
+
+  .b2b-inquiry-layout,
+  .b2b-catalogue-inner {
+    grid-template-columns: 1fr;
+    gap: 40px;
+  }
+
+  .b2b-catalogue-image {
+    aspect-ratio: 16 / 10;
+  }
+
+  .b2b-catalogue-pdf {
+    width: 70%;
+    height: 100%;
+  }
+}
+
+@media (max-width: 768px) {
+  .b2b-stats-grid,
+  .b2b-why-grid,
+  .b2b-usecases-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .b2b-usecase {
+    grid-template-columns: 56px 1fr;
+    gap: 16px;
+    padding: 20px;
+  }
+
+  .b2b-usecase-icon {
+    width: 56px;
+    height: 56px;
+    font-size: 22px;
+  }
+
+  .b2b-inquiry-form {
+    padding: 24px;
+  }
 }
 
 /* ============ FLOATING CONTACT WIDGET ============ */
