@@ -1,9 +1,9 @@
 /* ============================================
    YOKOOL — Interaction layer
+   - Hero carousel (auto-rotate, manual nav, dots)
    - Sticky header on scroll
    - Mobile menu toggle
-   - Scroll reveal animations
-   - Order form (opens email client with prefilled content)
+   - Smooth scroll with header offset
    ============================================ */
 
 (function () {
@@ -11,16 +11,14 @@
 
   // ============ STICKY HEADER ============
   const header = document.getElementById('siteHeader');
-  let lastScrollY = 0;
 
   function onScroll() {
-    const scrollY = window.scrollY;
-    if (scrollY > 20) {
+    if (!header) return;
+    if (window.scrollY > 20) {
       header.classList.add('is-scrolled');
     } else {
       header.classList.remove('is-scrolled');
     }
-    lastScrollY = scrollY;
   }
 
   window.addEventListener('scroll', onScroll, { passive: true });
@@ -37,7 +35,6 @@
       menuToggle.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
     });
 
-    // Close menu when clicking a nav link
     nav.querySelectorAll('a').forEach(link => {
       link.addEventListener('click', () => {
         nav.classList.remove('is-open');
@@ -47,10 +44,117 @@
     });
   }
 
+  // ============ HERO CAROUSEL ============
+  const carousel = document.getElementById('heroCarousel');
+
+  if (carousel) {
+    const slides = carousel.querySelectorAll('.carousel-slide');
+    const dots = carousel.querySelectorAll('.dot');
+    const prevBtn = document.getElementById('carouselPrev');
+    const nextBtn = document.getElementById('carouselNext');
+
+    let currentSlide = 0;
+    let autoRotateTimer = null;
+    const AUTO_ROTATE_DELAY = 6000; // 6 seconds
+
+    function goToSlide(index) {
+      // Wrap around
+      if (index < 0) index = slides.length - 1;
+      if (index >= slides.length) index = 0;
+
+      slides.forEach((slide, i) => {
+        slide.classList.toggle('is-active', i === index);
+      });
+      dots.forEach((dot, i) => {
+        dot.classList.toggle('is-active', i === index);
+      });
+
+      currentSlide = index;
+    }
+
+    function nextSlide() {
+      goToSlide(currentSlide + 1);
+    }
+
+    function prevSlide() {
+      goToSlide(currentSlide - 1);
+    }
+
+    function startAutoRotate() {
+      stopAutoRotate();
+      autoRotateTimer = setInterval(nextSlide, AUTO_ROTATE_DELAY);
+    }
+
+    function stopAutoRotate() {
+      if (autoRotateTimer) {
+        clearInterval(autoRotateTimer);
+        autoRotateTimer = null;
+      }
+    }
+
+    // Button bindings
+    if (prevBtn) {
+      prevBtn.addEventListener('click', () => {
+        prevSlide();
+        startAutoRotate(); // restart timer after manual interaction
+      });
+    }
+    if (nextBtn) {
+      nextBtn.addEventListener('click', () => {
+        nextSlide();
+        startAutoRotate();
+      });
+    }
+
+    // Dot bindings
+    dots.forEach((dot, i) => {
+      dot.addEventListener('click', () => {
+        goToSlide(i);
+        startAutoRotate();
+      });
+    });
+
+    // Pause on hover
+    carousel.addEventListener('mouseenter', stopAutoRotate);
+    carousel.addEventListener('mouseleave', startAutoRotate);
+
+    // Keyboard navigation
+    document.addEventListener('keydown', (e) => {
+      // Only when carousel is in viewport (rough check)
+      const rect = carousel.getBoundingClientRect();
+      if (rect.bottom < 0 || rect.top > window.innerHeight) return;
+
+      if (e.key === 'ArrowLeft') prevSlide();
+      if (e.key === 'ArrowRight') nextSlide();
+    });
+
+    // Touch swipe support
+    let touchStartX = 0;
+    let touchEndX = 0;
+
+    carousel.addEventListener('touchstart', (e) => {
+      touchStartX = e.changedTouches[0].screenX;
+      stopAutoRotate();
+    }, { passive: true });
+
+    carousel.addEventListener('touchend', (e) => {
+      touchEndX = e.changedTouches[0].screenX;
+      const swipeDistance = touchStartX - touchEndX;
+      const SWIPE_THRESHOLD = 50;
+
+      if (swipeDistance > SWIPE_THRESHOLD) nextSlide();
+      else if (swipeDistance < -SWIPE_THRESHOLD) prevSlide();
+
+      startAutoRotate();
+    }, { passive: true });
+
+    // Start auto rotation
+    startAutoRotate();
+  }
+
   // ============ SCROLL REVEAL ============
-  // Add .reveal class to sections, animate when they enter viewport
   const revealTargets = document.querySelectorAll(
-    '.section-header, .product-card, .showcase-content, .showcase-visual, .feature-card, .order-form'
+    '.section-header, .product-card, .feature-card, .why-card, .showcase-content, .showcase-visual, .contact-channel, .related-card, .specs-row'
   );
 
   revealTargets.forEach(el => el.classList.add('reveal'));
@@ -59,10 +163,13 @@
     const observer = new IntersectionObserver((entries) => {
       entries.forEach(entry => {
         if (entry.isIntersecting) {
-          // Stagger product cards a bit
           const target = entry.target;
-          const delay = target.classList.contains('product-card')
-            ? Array.from(target.parentElement.children).indexOf(target) * 100
+          // Stagger cards a bit
+          const delay = (target.classList.contains('product-card') ||
+                         target.classList.contains('why-card') ||
+                         target.classList.contains('feature-card') ||
+                         target.classList.contains('related-card'))
+            ? Array.from(target.parentElement.children).indexOf(target) * 80
             : 0;
           setTimeout(() => target.classList.add('is-visible'), delay);
           observer.unobserve(target);
@@ -70,74 +177,15 @@
       });
     }, {
       threshold: 0.1,
-      rootMargin: '0px 0px -80px 0px',
+      rootMargin: '0px 0px -60px 0px',
     });
 
     revealTargets.forEach(el => observer.observe(el));
   } else {
-    // Fallback: just show everything
     revealTargets.forEach(el => el.classList.add('is-visible'));
   }
 
-  // ============ ORDER FORM ============
-  // Without a backend, we open the user's email client with prefilled content.
-  // Sau này khi có Cloudflare Workers + Resend, thay phần này bằng fetch() lên API.
-
-  const form = document.getElementById('orderForm');
-  const formNote = document.getElementById('formNote');
-
-  if (form && formNote) {
-    form.addEventListener('submit', (e) => {
-      e.preventDefault();
-
-      const data = {
-        name: form.elements.name.value.trim(),
-        phone: form.elements.phone.value.trim(),
-        product: form.elements.product.value,
-        note: form.elements.note.value.trim(),
-      };
-
-      // Validation
-      if (!data.name || !data.phone || !data.product) {
-        formNote.hidden = false;
-        formNote.classList.add('is-error');
-        formNote.textContent = 'Vui lòng điền đầy đủ họ tên, số điện thoại và sản phẩm.';
-        return;
-      }
-
-      // Build mailto link with order details
-      const subject = encodeURIComponent(`[Đơn hàng] ${data.product} — ${data.name}`);
-      const body = encodeURIComponent(
-        `YÊU CẦU ĐẶT HÀNG\n` +
-        `========================\n\n` +
-        `Họ tên: ${data.name}\n` +
-        `Số điện thoại: ${data.phone}\n` +
-        `Sản phẩm: ${data.product}\n` +
-        `Ghi chú: ${data.note || '(không có)'}\n\n` +
-        `--\n` +
-        `Gửi từ yokool.vn lúc ${new Date().toLocaleString('vi-VN')}`
-      );
-
-      const mailtoLink = `mailto:info@yokool.vn?subject=${subject}&body=${body}`;
-
-      // Show success message
-      formNote.hidden = false;
-      formNote.classList.remove('is-error');
-      formNote.textContent = 'Đang mở email của bạn... Nếu không tự mở, vui lòng gọi hotline trực tiếp.';
-
-      // Open email client
-      window.location.href = mailtoLink;
-
-      // Optional: reset form after 2 seconds
-      setTimeout(() => {
-        form.reset();
-        formNote.hidden = true;
-      }, 5000);
-    });
-  }
-
   // ============ SMOOTH SCROLL FOR ANCHOR LINKS ============
-  // CSS already has scroll-behavior: smooth, but we add header offset
   document.querySelectorAll('a[href^="#"]').forEach(anchor => {
     anchor.addEventListener('click', function (e) {
       const href = this.getAttribute('href');
@@ -157,14 +205,10 @@
     });
   });
 
-  // ============ HERO TICKER DUPLICATE (for seamless loop) ============
-  // The ticker has duplicated content in HTML, but ensure animation runs smoothly
-  // No additional JS needed — CSS handles it.
-
   // ============ CONSOLE EASTER EGG ============
   if (typeof console !== 'undefined' && console.log) {
-    console.log('%c YOKOOL ', 'background:#FF6B00;color:#000;font-weight:bold;font-size:14px;padding:4px 8px;');
-    console.log('%c Năng lượng. Không giới hạn. ', 'color:#9A9A9A;font-style:italic;');
-    console.log('Build: v1.0 — Cloudflare Pages ready.');
+    console.log('%c YOKOOL ', 'background:#DC143B;color:#fff;font-weight:bold;font-size:14px;padding:4px 8px;');
+    console.log('%c Năng lượng. Không giới hạn. ', 'color:#888;font-style:italic;');
+    console.log('Build: v2.0 — light theme · Cloudflare Pages');
   }
 })();

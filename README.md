@@ -1,180 +1,131 @@
-# YOKOOL — Website
+# YOKOOL Website — v2.0
 
-Website giới thiệu sản phẩm Yokool, phong cách retro-futuristic / cyberpunk lấy cảm hứng từ sharge.com. Single-page, static, deploy lên Cloudflare Pages.
+Website tĩnh cho thương hiệu Yokool, giao diện sáng (light theme) với màu chủ đạo **#DC143B** (crimson red). Pure HTML/CSS/JS — không framework, không build step.
 
-## Cấu trúc dự án
+## Cấu trúc thư mục
 
 ```
 yokool/
-├── index.html       # Trang chính (HTML)
-├── styles.css       # Toàn bộ CSS
-├── script.js        # JavaScript (animations, form)
-├── README.md        # File này
-└── images/          # Thư mục chứa ảnh sản phẩm (hiện đang trống)
+├── index.html              ← Trang chủ (carousel + product grid)
+├── styles.css              ← CSS dùng chung cho cả site
+├── script.js               ← JavaScript (carousel, menu, animations)
+├── README.md               ← File này
+├── images/                 ← Ảnh và banner
+│   ├── banner-1.svg        ← Banner slide 1 (SL207)
+│   ├── banner-2.svg        ← Banner slide 2 (OL212)
+│   ├── banner-3.svg        ← Banner slide 3 (JP395)
+│   ├── product-sl207.svg   ← Ảnh sản phẩm SL207
+│   ├── product-ol212.svg   ← Ảnh sản phẩm OL212
+│   ├── product-jp395.svg   ← Ảnh sản phẩm JP395
+│   └── product-rc502.svg   ← Ảnh sản phẩm RC502
+└── products/               ← Trang chi tiết từng sản phẩm
+    ├── sl207.html
+    ├── ol212.html
+    ├── jp395.html
+    └── rc502.html
 ```
 
-Tổng cộng 3 file code + 1 file README. Không cần Node.js, không cần build step, không cài đặt gì. Push lên GitHub là chạy được.
+## Cách deploy lên Cloudflare Pages
 
----
+### Cách 1: Upload qua GitHub (đã làm rồi, chỉ cần update repo)
 
-## 1. Test trên máy trước khi deploy
+1. Vào repo GitHub `vuvantruong1102-lang/Yokool-web`
+2. **Xoá tất cả file cũ** trong repo (chọn từng file → Delete)
+3. Upload toàn bộ nội dung **bên trong** thư mục `yokool/` này lên repo (KHÔNG upload thư mục `yokool/` mà upload các file/folder bên trong nó)
+4. Cloudflare Pages sẽ tự động deploy lại trong 30-60 giây
 
-Mở `index.html` bằng trình duyệt bất kỳ (Chrome/Edge/Firefox) — kéo file vào tab trình duyệt, hoặc double-click. Website hiển thị ngay.
+**LƯU Ý**: Khi upload phải đảm bảo file `index.html` nằm ở root của repo, không phải trong subfolder `yokool/index.html`.
 
-Nếu muốn test giống production hơn (có URL `http://localhost`), mở Terminal/PowerShell trong thư mục `yokool/` rồi chạy:
+### Cách 2: Drag & drop trực tiếp lên Cloudflare Pages
 
-```bash
-# Nếu có Python 3:
-python -m http.server 8000
+1. Vào Cloudflare dashboard → Pages → project `yokool-web`
+2. Click "Create deployment" → "Upload assets"
+3. Kéo cả 4 thứ: `index.html`, `styles.css`, `script.js`, thư mục `images/`, thư mục `products/`
+4. Click "Deploy site"
 
-# Nếu có Node.js:
-npx serve
+## Test local trước khi deploy
 
-# Sau đó mở http://localhost:8000
+1. Giải nén file zip (đừng mở trực tiếp từ trong zip)
+2. Vào thư mục `yokool/`
+3. Double-click `index.html`
+4. Browser sẽ mở và hiển thị website
+
+Nếu test trang sản phẩm: vào `products/` → double-click bất kỳ file `.html` nào.
+
+## Tuỳ chỉnh
+
+### Đổi link Shopee
+
+Search & replace `https://shopee.vn/yokool` trong tất cả file `.html` thành link Shopee thật của bạn.
+
+### Đổi thông tin liên hệ
+
+Trong `index.html`, tìm section `<section class="contact-section">` và sửa:
+- Số hotline: `+84 900 000 000`
+- Zalo: `zalo.me/yokool`
+- Email: `info@yokool.vn`
+
+### Đổi màu thương hiệu
+
+Trong `styles.css`, sửa biến CSS ở đầu file:
+
+```css
+:root {
+  --brand: #DC143B;         /* màu chính */
+  --brand-hover: #B30E2F;   /* màu hover (đậm hơn) */
+}
 ```
 
----
+### Thay ảnh placeholder bằng ảnh thật
 
-## 2. Đẩy code lên GitHub
+Tất cả ảnh hiện tại là SVG placeholder do mình tự vẽ. Để thay bằng ảnh AI hoặc ảnh chụp thật:
 
-### Bước 2.1 — Tạo repo trên GitHub
+**Cách 1 - Thay file SVG bằng file PNG/JPG**:
+1. Đặt ảnh mới vào folder `images/`
+2. Trong từng file HTML, sửa `src="images/banner-1.svg"` thành `src="images/banner-1.jpg"` (đổi đuôi)
+3. Khuyến nghị kích thước:
+   - Banner: 1600×600px (tỉ lệ 16:6)
+   - Sản phẩm: 800×800px (vuông)
 
-1. Vào [github.com](https://github.com), click nút **"+"** góc trên bên phải → **New repository**
-2. Tên repo: `yokool-website` (hoặc tên khác tuỳ ý)
-3. Để **Public** (Cloudflare Pages cũng support Private, nhưng Public đơn giản hơn cho người mới)
-4. **KHÔNG** tick "Add README" (vì repo này đã có sẵn)
-5. Click **Create repository**
+**Cách 2 - Đặt ảnh mới cùng tên SVG cũ**:
+- Đặt file mới vào `images/` với chính xác tên cũ (`banner-1.svg`, `product-sl207.svg`,...)
+- Không cần sửa HTML
 
-### Bước 2.2 — Upload code
+## Tính năng đã có
 
-Cách dễ nhất (không cần biết Git):
+- ✅ Hero carousel 3 slide tự xoay 6 giây, có nút prev/next, dots
+- ✅ Carousel hỗ trợ vuốt trên mobile, mũi tên bàn phím
+- ✅ Header dính khi cuộn, blur background
+- ✅ Mobile menu (hamburger) tự thu khi click link
+- ✅ Scroll reveal — phần tử mờ rồi hiện khi cuộn tới
+- ✅ Smooth scroll khi click anchor link (#contact)
+- ✅ Hoàn toàn responsive — đẹp trên mobile, tablet, desktop
+- ✅ Tối ưu cho diacritic tiếng Việt (font Be Vietnam Pro)
+- ✅ Nút "Mua tại Shopee" ở mọi nơi cần (header, hero, CTA cuối, related products)
+- ✅ Không có form thanh toán online — chỉ link Shopee + form tư vấn
 
-1. Trên trang repo vừa tạo, click **"uploading an existing file"** trong dòng "Quick setup"
-2. Kéo-thả tất cả file trong thư mục `yokool/` vào trang đó (index.html, styles.css, script.js, README.md, folder images)
-3. Cuộn xuống, ấn **Commit changes**
+## Tính năng chưa có (có thể thêm sau)
 
-Cách dùng Git command line (nếu Jay biết Git):
+- Form gửi yêu cầu tư vấn (cần backend hoặc dịch vụ như Formspree)
+- Tích hợp Google Analytics
+- Sitemap.xml + robots.txt cho SEO
+- Open Graph image cho khi share Facebook/Zalo
+- Trang blog/tin tức
 
-```bash
-cd yokool
-git init
-git add .
-git commit -m "Initial commit"
-git branch -M main
-git remote add origin https://github.com/USERNAME/yokool-website.git
-git push -u origin main
-```
+## Câu hỏi thường gặp
 
----
+**Q: Tại sao SVG mà không phải PNG/JPG?**
+A: SVG nhẹ hơn, sắc nét ở mọi kích thước (retina), dễ chỉnh màu. Khi bạn có ảnh AI rồi thì thay sang PNG/JPG cũng được.
 
-## 3. Deploy lên Cloudflare Pages
+**Q: Sao không dùng React/Next.js?**
+A: Site tĩnh đơn giản, vài trang sản phẩm. HTML thuần load nhanh hơn, dễ host miễn phí, không phải build. Khi nào cần dynamic (đặt hàng online, blog có quản trị) sẽ chuyển.
 
-### Bước 3.1 — Tạo Cloudflare Pages project
+**Q: Cloudflare Pages có giới hạn gì?**
+A: Free tier: unlimited bandwidth, 500 builds/tháng, 100 deploys/ngày. Quá đủ cho website thương mại nhỏ.
 
-1. Đăng nhập [dash.cloudflare.com](https://dash.cloudflare.com)
-2. Sidebar bên trái → **Compute** (hoặc **Workers & Pages**) → **Pages**
-3. Click **Create application** → tab **Pages** → **Connect to Git**
-4. Chọn GitHub, ủy quyền cho Cloudflare đọc repo của Jay
-5. Chọn repo `yokool-website` → **Begin setup**
-
-### Bước 3.2 — Cấu hình build
-
-Vì đây là site static thuần, không cần build:
-
-| Setting | Giá trị |
-|---|---|
-| Project name | `yokool` (sẽ thành yokool.pages.dev) |
-| Production branch | `main` |
-| Framework preset | **None** |
-| Build command | (để trống) |
-| Build output directory | `/` |
-
-Click **Save and Deploy**. Đợi 30-60 giây, site sẽ live ở `https://yokool.pages.dev`.
-
-### Bước 3.3 — Gắn domain yokool.vn (sau khi đã mua domain)
-
-1. Vào project vừa deploy → tab **Custom domains** → **Set up a custom domain**
-2. Nhập `yokool.vn`, làm theo hướng dẫn Cloudflare để thêm CNAME record
-3. Nếu domain đã ở Cloudflare DNS, chỉ cần 1 click
-4. Sau 5-10 phút, `yokool.vn` chạy luôn với SSL miễn phí
+**Q: Nếu Cloudflare Pages chậm propagate?**
+A: Đợi 30-60 giây, mở incognito để bypass cache, hoặc vào Cloudflare dashboard purge cache.
 
 ---
 
-## 4. Cập nhật nội dung sau này
-
-Vì code trên GitHub kết nối với Cloudflare Pages, mỗi lần Jay push commit lên GitHub thì website tự động cập nhật. Quy trình:
-
-1. Sửa file trên máy (hoặc sửa trực tiếp trên github.com)
-2. Commit + push
-3. Cloudflare Pages tự build lại sau ~30 giây
-4. Website mới live
-
-### Những phần thường cần sửa
-
-**Số điện thoại / Email** — mở `index.html`, tìm `+84 900 000 000` và `info@yokool.vn`, sửa thành thông tin thật.
-
-**Link Shopee / Zalo** — tìm `shopee.vn/yokool` và `zalo.me/yokool`, thay bằng link thật.
-
-**Thông số sản phẩm** — tìm phần `<section class="showcase" id="sl207">` (và 3 phần tương tự), sửa các thông số `Công suất`, `Cổng`, etc. cho đúng.
-
-**Ảnh sản phẩm thật** — hiện tại đang dùng hình minh hoạ (CSS placeholder). Để thay bằng ảnh thật:
-
-1. Lưu 4 ảnh sản phẩm vào thư mục `images/` với tên `sl207.jpg`, `ol212.jpg`, `jp395.jpg`, `rc502.jpg` (PNG cũng được)
-2. Mở `index.html`, tìm `<div class="showcase-product showcase-product--sl207">`, thay bằng:
-   ```html
-   <img src="images/sl207.jpg" alt="Yokool SL207" class="showcase-product-img">
-   ```
-3. Mở `styles.css`, thêm cuối file:
-   ```css
-   .showcase-product-img {
-     width: 80%;
-     aspect-ratio: 1/1;
-     object-fit: cover;
-     border: 1px solid var(--border-medium);
-   }
-   ```
-4. Làm tương tự cho OL212, JP395, RC502
-
----
-
-## 5. Tính năng đã có
-
-- Hero section với animation reveal khi load
-- Grid 4 sản phẩm với hover effects
-- 4 section chi tiết sản phẩm (xen kẽ trái-phải)
-- Section "Tại sao chọn Yokool"
-- Form đặt hàng (mở email client với nội dung đã điền sẵn — không cần backend)
-- Header sticky với glass effect
-- Mobile menu (responsive đầy đủ)
-- Smooth scroll giữa các section
-- Dark mode cyberpunk aesthetic
-- Vietnamese typography optimized
-
----
-
-## 6. Mở rộng sau này
-
-Khi muốn nâng cấp (theo thứ tự đề xuất):
-
-**Bước 1 — Form đặt hàng gửi email tự động (không cần mở email client)**: Đăng ký [Resend.com](https://resend.com) (free 100 email/ngày), thêm Pages Functions để xử lý form, gửi email tới `info@yokool.vn` mỗi khi có đơn.
-
-**Bước 2 — Database lưu đơn hàng**: Tạo Cloudflare D1 database, bind vào Pages project, sửa Pages Function để lưu mỗi đơn vào DB. Sau này có thể thêm trang admin xem danh sách đơn.
-
-**Bước 3 — Trang admin riêng**: Tạo Pages project thứ hai (`admin.yokool.vn`) làm dashboard quản lý sản phẩm/bài viết, cùng kết nối D1 và R2.
-
-**Bước 4 — Blog SEO với AI**: Thêm section blog, dùng OpenAI API để viết bài về sạc nhanh, công nghệ GaN, mẹo du lịch...
-
----
-
-## 7. Có vấn đề gì hỏi Claude
-
-Bất kỳ lúc nào gặp lỗi hoặc muốn thay đổi/thêm tính năng, chỉ cần mô tả vấn đề là Claude sẽ hỗ trợ. Một số tình huống thường gặp:
-
-- "Website không hiện font đẹp" → kiểm tra kết nối internet (font load từ Google Fonts)
-- "Form submit không gửi được email" → form hiện chỉ mở email client, chưa gửi tự động. Cần Resend như mục 6 ở trên
-- "Muốn thêm sản phẩm thứ 5" → copy 1 block `<section class="showcase">` trong index.html, sửa nội dung
-- "Đổi màu chủ đạo" → mở `styles.css`, tìm `--accent-amber: #FF6B00;` và sửa thành mã màu khác
-
----
-
-**Made for YOKOOL · v1.0 · Built for Cloudflare Pages**
+© 2026 YOKOOL — Made in Vietnam · v2.0 light theme · Powered by Cloudflare Pages
