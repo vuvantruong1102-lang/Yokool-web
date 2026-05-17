@@ -256,43 +256,59 @@ input, select, textarea, button {
 .logo {
   display: inline-flex;
   align-items: center;
-  gap: 8px;
-  font-family: var(--font-display);
-  font-weight: 800;
-  font-size: 20px;
-  letter-spacing: 0.04em;
+  text-decoration: none;
   color: var(--text-primary);
+  transition: opacity 0.2s var(--ease);
 }
 
-.logo-mark {
-  color: var(--brand);
-  font-size: 18px;
-  transition: transform 0.4s var(--ease);
+.logo:hover {
+  opacity: 0.75;
 }
 
-.logo:hover .logo-mark {
-  transform: rotate(180deg);
+.logo-img {
+  height: 26px;
+  width: auto;
+  display: block;
+}
+
+.footer-brand .logo-img {
+  height: 36px;
 }
 
 .main-nav {
   display: flex;
-  gap: 32px;
+  gap: 28px;
   font-size: 14px;
   font-weight: 500;
   color: var(--text-secondary);
+  align-items: center;
 }
 
-.main-nav a {
+/* Top-level nav items: link or dropdown trigger */
+.nav-link,
+.nav-dropdown-btn {
   position: relative;
-  padding: 4px 0;
+  padding: 6px 0;
+  font: inherit;
+  color: var(--text-secondary);
+  background: none;
+  border: none;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
   transition: color 0.2s var(--ease);
+  white-space: nowrap;
 }
 
-.main-nav a:hover {
+.nav-link:hover,
+.nav-dropdown:hover .nav-dropdown-btn,
+.nav-dropdown:focus-within .nav-dropdown-btn {
   color: var(--text-primary);
 }
 
-.main-nav a::after {
+.nav-link::after,
+.nav-dropdown-btn::after {
   content: "";
   position: absolute;
   left: 0;
@@ -303,8 +319,165 @@ input, select, textarea, button {
   transition: width 0.3s var(--ease);
 }
 
-.main-nav a:hover::after {
+.nav-link:hover::after,
+.nav-dropdown:hover .nav-dropdown-btn::after,
+.nav-dropdown:focus-within .nav-dropdown-btn::after {
   width: 100%;
+}
+
+.nav-chevron {
+  transition: transform 0.25s var(--ease);
+  display: inline-block;
+  flex-shrink: 0;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .nav-dropdown:hover .nav-chevron,
+  .nav-dropdown:focus-within .nav-chevron {
+    transform: rotate(180deg);
+  }
+}
+
+/* Dropdown panel (level 1) */
+.nav-dropdown,
+.nav-submenu {
+  position: relative;
+}
+
+.nav-dropdown-panel {
+  position: absolute;
+  top: calc(100% + 14px);
+  left: -16px;
+  min-width: 240px;
+  background: var(--bg-base);
+  border: 1px solid var(--border-subtle);
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.08);
+  padding: 8px;
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(-8px);
+  transition: opacity 0.2s var(--ease), visibility 0.2s var(--ease), transform 0.2s var(--ease);
+  z-index: 120;
+  list-style: none;
+}
+
+/* Invisible bridge prevents close when mouse moves between trigger and panel */
+.nav-dropdown-panel::before {
+  content: "";
+  position: absolute;
+  top: -14px;
+  left: 0;
+  right: 0;
+  height: 14px;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .nav-dropdown:hover .nav-dropdown-panel,
+  .nav-dropdown:focus-within .nav-dropdown-panel {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+  }
+}
+
+/* Submenu trigger (level 2) */
+.nav-submenu-btn {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  padding: 11px 14px;
+  font: inherit;
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--text-primary);
+  background: none;
+  border: none;
+  cursor: pointer;
+  text-align: left;
+  transition: background 0.2s var(--ease), color 0.2s var(--ease);
+}
+
+.nav-submenu-btn::after {
+  display: none;
+}
+
+.nav-submenu-arrow {
+  color: var(--text-tertiary);
+  font-size: 18px;
+  line-height: 1;
+  transition: transform 0.2s var(--ease), color 0.2s var(--ease);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .nav-submenu:hover > .nav-submenu-btn,
+  .nav-submenu:focus-within > .nav-submenu-btn {
+    background: var(--brand-soft);
+    color: var(--brand);
+  }
+
+  .nav-submenu:hover > .nav-submenu-btn .nav-submenu-arrow,
+  .nav-submenu:focus-within > .nav-submenu-btn .nav-submenu-arrow {
+    color: var(--brand);
+    transform: translateX(3px);
+  }
+}
+
+/* Submenu panel (level 3 - leaf items) */
+.nav-submenu-panel {
+  position: absolute;
+  top: -8px;
+  left: calc(100% + 4px);
+  min-width: 180px;
+  background: var(--bg-base);
+  border: 1px solid var(--border-subtle);
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.08);
+  padding: 8px;
+  opacity: 0;
+  visibility: hidden;
+  transform: translateX(-8px);
+  transition: opacity 0.2s var(--ease), visibility 0.2s var(--ease), transform 0.2s var(--ease);
+  list-style: none;
+}
+
+.nav-submenu-panel::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -8px;
+  bottom: 0;
+  width: 8px;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .nav-submenu:hover > .nav-submenu-panel,
+  .nav-submenu:focus-within > .nav-submenu-panel {
+    opacity: 1;
+    visibility: visible;
+    transform: translateX(0);
+  }
+}
+
+/* Leaf links inside dropdown */
+.nav-leaf {
+  display: block;
+  padding: 11px 14px;
+  font-family: var(--font-mono);
+  font-size: 13px;
+  font-weight: 500;
+  letter-spacing: 0.05em;
+  color: var(--text-primary);
+  transition: background 0.2s var(--ease), color 0.2s var(--ease), padding-left 0.2s var(--ease);
+}
+
+.nav-leaf:hover {
+  background: var(--brand-soft);
+  color: var(--brand);
+  padding-left: 18px;
+}
+
+.nav-leaf::after {
+  display: none;
 }
 
 .menu-toggle {
@@ -1186,6 +1359,80 @@ input, select, textarea, button {
   letter-spacing: 0.05em;
 }
 
+/* ============ NEWS PAGE ============ */
+.news-hero {
+  padding: 140px 0 64px;
+  background: var(--bg-surface);
+  border-bottom: 1px solid var(--border-subtle);
+}
+
+.news-hero-inner {
+  max-width: 720px;
+}
+
+.news-hero-title {
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: clamp(40px, 6vw, 72px);
+  line-height: 1.05;
+  letter-spacing: -0.03em;
+  margin: 12px 0 16px;
+  color: var(--text-primary);
+}
+
+.news-hero-tagline {
+  font-size: clamp(16px, 1.8vw, 20px);
+  color: var(--text-secondary);
+  line-height: 1.5;
+}
+
+.news-empty {
+  padding: var(--section-padding) 0;
+  background: var(--bg-base);
+}
+
+.news-empty-inner {
+  max-width: 640px;
+  margin: 0 auto;
+  text-align: center;
+}
+
+.news-empty-mark {
+  font-size: 48px;
+  color: var(--brand);
+  margin-bottom: 24px;
+  display: inline-block;
+  animation: spinSlow 8s linear infinite;
+}
+
+@keyframes spinSlow {
+  to { transform: rotate(360deg); }
+}
+
+.news-empty-title {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: clamp(28px, 4vw, 42px);
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+  margin-bottom: 20px;
+  color: var(--text-primary);
+}
+
+.news-empty-description {
+  font-size: 16px;
+  color: var(--text-secondary);
+  line-height: 1.7;
+  margin-bottom: 40px;
+}
+
+.news-empty-actions {
+  display: flex;
+  gap: 12px;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
 /* ============ ANIMATIONS ============ */
 @keyframes slideUp {
   to {
@@ -1241,16 +1488,19 @@ input, select, textarea, button {
     left: 0;
     right: 0;
     flex-direction: column;
+    align-items: stretch;
     background: var(--bg-glass);
     backdrop-filter: blur(20px) saturate(180%);
     -webkit-backdrop-filter: blur(20px) saturate(180%);
-    padding: 24px var(--container-padding);
-    gap: 16px;
+    padding: 16px var(--container-padding) 24px;
+    gap: 4px;
     border-bottom: 1px solid var(--border-subtle);
     transform: translateY(-10px);
     opacity: 0;
     pointer-events: none;
     transition: all 0.3s var(--ease);
+    max-height: calc(100vh - 64px);
+    overflow-y: auto;
   }
 
   .main-nav.is-open {
@@ -1259,9 +1509,77 @@ input, select, textarea, button {
     pointer-events: auto;
   }
 
-  .main-nav a {
+  .nav-link,
+  .nav-dropdown-btn,
+  .nav-submenu-btn {
+    width: 100%;
     font-size: 16px;
+    padding: 12px 0;
+    justify-content: space-between;
+  }
+
+  .nav-link::after,
+  .nav-dropdown-btn::after {
+    display: none; /* no underline on mobile, use background instead */
+  }
+
+  /* Dropdown panel: become inline accordion on mobile */
+  .nav-dropdown-panel,
+  .nav-submenu-panel {
+    position: static;
+    transform: none !important;
+    box-shadow: none;
+    border: none;
+    background: transparent;
+    padding: 0;
+    margin: 0 0 0 16px;
+    min-width: 0;
+    width: auto;
+    max-height: 0;
+    overflow: hidden;
+    opacity: 1 !important;
+    visibility: visible !important;
+    transition: max-height 0.3s var(--ease);
+  }
+
+  .nav-dropdown-panel::before,
+  .nav-submenu-panel::before {
+    display: none;
+  }
+
+  .nav-dropdown.is-open > .nav-dropdown-panel {
+    max-height: 600px;
+    margin-top: 4px;
+    margin-bottom: 8px;
+  }
+
+  .nav-submenu.is-open > .nav-submenu-panel {
+    max-height: 400px;
+  }
+
+  .nav-submenu-btn {
+    padding: 10px 0;
+    font-size: 14px;
+  }
+
+  .nav-leaf {
     padding: 8px 0;
+    font-size: 13px;
+  }
+
+  .nav-leaf:hover {
+    padding-left: 0;
+    background: transparent;
+  }
+
+  /* Rotate chevron on open */
+  .nav-dropdown.is-open .nav-chevron {
+    transform: rotate(180deg);
+  }
+
+  .nav-submenu.is-open .nav-submenu-arrow {
+    transform: rotate(90deg);
+    color: var(--brand);
   }
 
   .cta-button--small {

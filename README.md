@@ -7,10 +7,12 @@ Website tĩnh cho thương hiệu Yokool, giao diện sáng (light theme) với 
 ```
 yokool/
 ├── index.html              ← Trang chủ (carousel + product grid)
+├── news.html               ← Trang Tin tức (placeholder)
 ├── styles.css              ← CSS dùng chung cho cả site
-├── script.js               ← JavaScript (carousel, menu, animations)
+├── script.js               ← JavaScript (carousel, menu dropdown, animations)
 ├── README.md               ← File này
-├── images/                 ← Ảnh và banner (đều là .jpg)
+├── images/                 ← Ảnh và banner (đều là .jpg / .png)
+│   ├── yokool-logo.png     ← Logo thương hiệu (nền trong suốt)
 │   ├── banner-1.jpg        ← Banner slide 1 (SL207) — 1600×600
 │   ├── banner-2.jpg        ← Banner slide 2 (OL212) — 1600×600
 │   ├── banner-3.jpg        ← Banner slide 3 (JP395) — 1600×600
@@ -24,6 +26,24 @@ yokool/
     ├── jp395.html
     └── rc502.html
 ```
+
+## Cấu trúc menu
+
+```
+Trang chủ
+Sản phẩm  ▾ (hover/tap)
+  ├─ Sạc dự phòng ›
+  │     └─ JP395
+  ├─ Củ sạc ›
+  │     └─ RC502
+  └─ Ổ điện du lịch ›
+        ├─ SL207
+        └─ OL212
+Tin tức
+Liên hệ
+```
+
+Trên desktop: hover để mở dropdown. Trên mobile: tap để toggle (accordion).
 
 ## Cách deploy lên Cloudflare Pages
 
