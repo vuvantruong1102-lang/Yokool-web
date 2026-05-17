@@ -10,14 +10,14 @@ yokool/
 ├── styles.css              ← CSS dùng chung cho cả site
 ├── script.js               ← JavaScript (carousel, menu, animations)
 ├── README.md               ← File này
-├── images/                 ← Ảnh và banner
-│   ├── banner-1.svg        ← Banner slide 1 (SL207)
-│   ├── banner-2.svg        ← Banner slide 2 (OL212)
-│   ├── banner-3.svg        ← Banner slide 3 (JP395)
-│   ├── product-sl207.svg   ← Ảnh sản phẩm SL207
-│   ├── product-ol212.svg   ← Ảnh sản phẩm OL212
-│   ├── product-jp395.svg   ← Ảnh sản phẩm JP395
-│   └── product-rc502.svg   ← Ảnh sản phẩm RC502
+├── images/                 ← Ảnh và banner (đều là .jpg)
+│   ├── banner-1.jpg        ← Banner slide 1 (SL207) — 1600×600
+│   ├── banner-2.jpg        ← Banner slide 2 (OL212) — 1600×600
+│   ├── banner-3.jpg        ← Banner slide 3 (JP395) — 1600×600
+│   ├── product-sl207.jpg   ← Ảnh sản phẩm SL207 — 800×800
+│   ├── product-ol212.jpg   ← Ảnh sản phẩm OL212 — 800×800
+│   ├── product-jp395.jpg   ← Ảnh sản phẩm JP395 — 800×800
+│   └── product-rc502.jpg   ← Ảnh sản phẩm RC502 — 800×800
 └── products/               ← Trang chi tiết từng sản phẩm
     ├── sl207.html
     ├── ol212.html
@@ -78,18 +78,26 @@ Trong `styles.css`, sửa biến CSS ở đầu file:
 
 ### Thay ảnh placeholder bằng ảnh thật
 
-Tất cả ảnh hiện tại là SVG placeholder do mình tự vẽ. Để thay bằng ảnh AI hoặc ảnh chụp thật:
+Tất cả ảnh hiện tại là JPG placeholder do mình render từ thiết kế geometric. Để thay bằng ảnh AI hoặc ảnh chụp thật:
 
-**Cách 1 - Thay file SVG bằng file PNG/JPG**:
-1. Đặt ảnh mới vào folder `images/`
-2. Trong từng file HTML, sửa `src="images/banner-1.svg"` thành `src="images/banner-1.jpg"` (đổi đuôi)
-3. Khuyến nghị kích thước:
-   - Banner: 1600×600px (tỉ lệ 16:6)
-   - Sản phẩm: 800×800px (vuông)
+**Cách thay (đơn giản nhất)**:
+1. Đặt ảnh của bạn với chính xác tên file cũ:
+   - `images/product-sl207.jpg` — sản phẩm SL207
+   - `images/product-ol212.jpg` — sản phẩm OL212
+   - `images/product-jp395.jpg` — sản phẩm JP395
+   - `images/product-rc502.jpg` — sản phẩm RC502
+   - `images/banner-1.jpg`, `banner-2.jpg`, `banner-3.jpg` — 3 banner hero
+2. Upload đè lên file cũ trên GitHub (cùng tên = tự thay)
+3. Cloudflare tự build lại trong 30-60 giây
 
-**Cách 2 - Đặt ảnh mới cùng tên SVG cũ**:
-- Đặt file mới vào `images/` với chính xác tên cũ (`banner-1.svg`, `product-sl207.svg`,...)
-- Không cần sửa HTML
+**Khuyến nghị kích thước**:
+- Banner: **1600×600 px** (tỉ lệ 16:6, ảnh ngang). Nội dung quan trọng nên ở giữa-phải vì text overlay nằm bên trái.
+- Sản phẩm: **800×800 px** (vuông). Nền trắng hoặc trong suốt sẽ hợp với theme nhất.
+- Định dạng: JPG (file nhỏ, phù hợp ảnh chụp) hoặc PNG (nếu cần nền trong suốt). Nếu dùng PNG, đổi đuôi file thành `.png` rồi sửa HTML.
+
+**Lưu ý ảnh OL212.jpg Jay đã có**: nền đen của ảnh đó sẽ tương phản mạnh với theme trắng. Có thể:
+- Giữ nguyên — sẽ nổi bật, hiện đại
+- Hoặc dùng AI/Photoshop xoá nền đen → còn lại sản phẩm đặt trên nền trắng/trong suốt → hài hoà hơn với theme
 
 ## Tính năng đã có
 
@@ -114,8 +122,11 @@ Tất cả ảnh hiện tại là SVG placeholder do mình tự vẽ. Để thay
 
 ## Câu hỏi thường gặp
 
-**Q: Tại sao SVG mà không phải PNG/JPG?**
-A: SVG nhẹ hơn, sắc nét ở mọi kích thước (retina), dễ chỉnh màu. Khi bạn có ảnh AI rồi thì thay sang PNG/JPG cũng được.
+**Q: Tại sao toàn bộ ảnh là JPG?**
+A: JPG nén tốt cho ảnh chụp sản phẩm thật, file nhỏ, mọi browser đều hiển thị. Nếu cần nền trong suốt (logo, icon) thì dùng PNG, đổi đuôi `.jpg` → `.png` trong HTML.
+
+**Q: Tôi muốn dùng WebP cho ảnh để load nhanh hơn?**
+A: Hoàn toàn có thể. Đặt file `.webp` vào `images/`, sửa đuôi trong HTML. Cloudflare hỗ trợ WebP tốt và tự nén/optimize.
 
 **Q: Sao không dùng React/Next.js?**
 A: Site tĩnh đơn giản, vài trang sản phẩm. HTML thuần load nhanh hơn, dễ host miễn phí, không phải build. Khi nào cần dynamic (đặt hàng online, blog có quản trị) sẽ chuyển.
