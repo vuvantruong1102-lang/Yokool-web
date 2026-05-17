@@ -3,9 +3,9 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="Tin tức và cập nhật mới nhất từ Yokool - sản phẩm sạc, ổ điện du lịch.">
+  <meta name="description" content="Thanh toán đơn hàng Yokool - thanh toán khi nhận hàng COD toàn quốc.">
   <meta name="theme-color" content="#FFFFFF">
-  <title>Tin tức — YOKOOL</title>
+  <title>Thanh toán — YOKOOL</title>
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -23,7 +23,6 @@
 
       <nav class="main-nav" aria-label="Điều hướng chính">
         <a href="index.html" class="nav-link">Trang chủ</a>
-
         <div class="nav-dropdown">
           <button class="nav-dropdown-btn" aria-haspopup="true" aria-expanded="false">
             Sản phẩm
@@ -62,7 +61,6 @@
             </div>
           </div>
         </div>
-
         <a href="news.html" class="nav-link">Tin tức</a>
         <a href="index.html#contact" class="nav-link">Liên hệ</a>
       </nav>
@@ -87,38 +85,149 @@
     </div>
   </header>
 
-  <section class="news-hero">
+  <section class="checkout-page">
     <div class="container">
-      <div class="news-hero-inner">
-        <span class="section-label">/ News &amp; updates</span>
-        <h1 class="news-hero-title">Tin tức Yokool.</h1>
-        <p class="news-hero-tagline">Cập nhật sản phẩm, sự kiện và câu chuyện thương hiệu.</p>
+
+      <div class="checkout-header">
+        <span class="section-label">/ Checkout · COD</span>
+        <h1 class="checkout-title">Thanh toán</h1>
+        <p class="checkout-subtitle">Điền thông tin nhận hàng. Yokool sẽ liên hệ trong 30 phút để xác nhận đơn.</p>
+      </div>
+
+      <!-- Empty state (no items) -->
+      <div id="checkoutEmpty" class="checkout-empty" style="display: none;">
+        <h2 class="checkout-empty-title">Chưa có sản phẩm nào</h2>
+        <p class="checkout-empty-text">Giỏ hàng đang trống. Khám phá sản phẩm Yokool và quay lại đây nhé.</p>
+        <a href="index.html" class="cta-button cta-button--large">
+          Xem sản phẩm
+          <span class="cta-arrow">→</span>
+        </a>
+      </div>
+
+      <!-- Main checkout layout (form + summary) -->
+      <div id="checkoutMain" class="checkout-layout">
+
+        <!-- Form column -->
+        <form class="checkout-form-card" id="checkoutForm" novalidate>
+          <h2 class="checkout-section-title">Thông tin nhận hàng</h2>
+
+          <div class="form-grid">
+            <div class="form-field form-field--full">
+              <label class="form-label is-required" for="fullname">Họ và tên</label>
+              <input class="form-input" type="text" id="fullname" name="fullname" autocomplete="name" required placeholder="Nguyễn Văn A">
+            </div>
+
+            <div class="form-field">
+              <label class="form-label is-required" for="phone">Số điện thoại</label>
+              <input class="form-input" type="tel" id="phone" name="phone" autocomplete="tel" inputmode="numeric" required placeholder="09xx xxx xxx">
+            </div>
+
+            <div class="form-field">
+              <label class="form-label" for="email">Email (tuỳ chọn)</label>
+              <input class="form-input" type="email" id="email" name="email" autocomplete="email" placeholder="ban@email.com">
+            </div>
+
+            <div class="form-field form-field--full">
+              <label class="form-label is-required" for="city">Tỉnh / Thành phố</label>
+              <input class="form-input" type="text" id="city" name="city" autocomplete="address-level1" required placeholder="VD: Hà Nội / TP. Hồ Chí Minh">
+            </div>
+
+            <div class="form-field form-field--full">
+              <label class="form-label is-required" for="address">Địa chỉ chi tiết</label>
+              <input class="form-input" type="text" id="address" name="address" autocomplete="street-address" required placeholder="Số nhà, ngõ, phường/xã, quận/huyện">
+              <span class="form-help">Càng chi tiết, đơn hàng tới càng nhanh.</span>
+            </div>
+
+            <div class="form-field form-field--full">
+              <label class="form-label" for="note">Ghi chú (tuỳ chọn)</label>
+              <textarea class="form-textarea" id="note" name="note" placeholder="Lưu ý cho shipper (ví dụ: gọi trước khi giao, không giao giờ trưa,...)"></textarea>
+            </div>
+          </div>
+
+          <h2 class="checkout-section-title">Phương thức thanh toán</h2>
+
+          <div class="payment-method">
+            <div class="payment-method-radio" aria-hidden="true"></div>
+            <div class="payment-method-info">
+              <div class="payment-method-title">Thanh toán khi nhận hàng (COD)</div>
+              <div class="payment-method-description">
+                Bạn trả tiền cho shipper khi nhận được hàng. Không phụ thu, không cần đặt cọc.
+                Hỗ trợ kiểm tra hàng trước khi thanh toán.
+              </div>
+            </div>
+          </div>
+
+          <button type="submit" class="cta-button cta-button--large cta-button--full" style="margin-top: 32px;">
+            Đặt hàng (COD)
+            <span class="cta-arrow">→</span>
+          </button>
+
+          <p class="form-help" style="text-align: center; margin-top: 16px;">
+            Bằng việc đặt hàng, bạn đồng ý với điều khoản &amp; chính sách của Yokool.
+          </p>
+        </form>
+
+        <!-- Summary column -->
+        <aside class="checkout-summary-card">
+          <h2 class="checkout-section-title">Đơn hàng của bạn</h2>
+
+          <div class="summary-items" id="checkoutSummaryList"></div>
+
+          <div class="summary-totals">
+            <div class="summary-row">
+              <span class="summary-row-label">Tạm tính</span>
+              <span class="summary-row-value" id="checkoutSubtotal">0đ</span>
+            </div>
+            <div class="summary-row">
+              <span class="summary-row-label">Phí vận chuyển</span>
+              <span class="summary-row-value summary-shipping">Miễn phí</span>
+            </div>
+            <div class="summary-row summary-row--total">
+              <span class="summary-row-label">Tổng cộng</span>
+              <span class="summary-row-value" id="checkoutTotal">0đ</span>
+            </div>
+          </div>
+
+          <p class="form-help" style="text-align: center;">
+            ◆ Miễn phí vận chuyển cho mọi đơn hàng<br>
+            ◆ Bảo hành 12 tháng chính hãng<br>
+            ◆ Đổi mới 30 ngày nếu lỗi
+          </p>
+        </aside>
+
       </div>
     </div>
   </section>
 
-  <section class="news-empty">
-    <div class="container">
-      <div class="news-empty-inner">
-        <div class="news-empty-mark">◆</div>
-        <h2 class="news-empty-title">Đang được cập nhật</h2>
-        <p class="news-empty-description">
-          Đội ngũ Yokool đang chuẩn bị những bài viết đầu tiên về công nghệ GaN,
-          hướng dẫn chọn sạc phù hợp và cập nhật bộ sưu tập 2026.
-          Quay lại sớm để đón đọc nhé!
-        </p>
-        <div class="news-empty-actions">
-          <a href="index.html" class="cta-button cta-button--large">
-            Khám phá sản phẩm
-            <span class="cta-arrow">→</span>
-          </a>
-          <a href="index.html#contact" class="cta-button cta-button--ghost cta-button--large">
-            Đăng ký nhận tin
-          </a>
-        </div>
+  <!-- ============ ORDER SUCCESS MODAL ============ -->
+  <div class="success-modal" id="orderSuccessModal" role="dialog" aria-labelledby="successTitle" aria-modal="true">
+    <div class="success-modal-card">
+      <button class="success-modal-close" aria-label="Đóng">
+        <svg width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden="true">
+          <path d="M5 5L15 15M15 5L5 15" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
+        </svg>
+      </button>
+
+      <div class="success-icon" aria-hidden="true">✓</div>
+      <h2 class="success-title" id="successTitle">Đặt hàng thành công!</h2>
+      <p class="success-order-id">Mã đơn hàng: <strong id="successOrderId">YK-XXXXX</strong></p>
+      <p class="success-message">
+        Cảm ơn bạn đã đặt hàng tại Yokool. Đội ngũ chúng tôi sẽ gọi điện xác nhận đơn trong vòng 30 phút (giờ hành chính).
+      </p>
+
+      <div class="success-details" id="successSummary"></div>
+
+      <div class="success-actions">
+        <a href="index.html" class="cta-button cta-button--large">
+          Xem sản phẩm khác
+          <span class="cta-arrow">→</span>
+        </a>
+        <a href="index.html" class="cta-button cta-button--ghost cta-button--large" data-close-success>
+          Về trang chủ
+        </a>
       </div>
     </div>
-  </section>
+  </div>
 
   <footer class="site-footer">
     <div class="container footer-inner">
@@ -158,6 +267,7 @@
       <p class="footer-meta">v3.0 — e-commerce</p>
     </div>
   </footer>
+
   <!-- ============ CART DRAWER ============ -->
   <div class="cart-drawer-overlay" aria-hidden="true"></div>
   <aside class="cart-drawer" aria-label="Giỏ hàng">
@@ -169,7 +279,6 @@
         </svg>
       </button>
     </div>
-
     <div class="cart-drawer-body">
       <div id="cartDrawerEmpty" class="cart-drawer-empty">
         <svg class="cart-drawer-empty-icon" viewBox="0 0 64 64" fill="none" aria-hidden="true">
@@ -182,7 +291,6 @@
       </div>
       <div id="cartDrawerList"></div>
     </div>
-
     <div class="cart-drawer-footer" id="cartDrawerFooter" style="display: none;">
       <div class="cart-drawer-total-row">
         <span class="cart-drawer-total-label">Tổng tạm tính</span>

@@ -8,14 +8,15 @@ Website tĩnh cho thương hiệu Yokool, giao diện sáng (light theme) với 
 yokool/
 ├── index.html              ← Trang chủ (carousel + product grid)
 ├── news.html               ← Trang Tin tức (placeholder)
+├── checkout.html           ← Trang thanh toán (đặt hàng COD)
 ├── styles.css              ← CSS dùng chung cho cả site
-├── script.js               ← JavaScript (carousel, menu dropdown, animations)
+├── script.js               ← JavaScript (carousel, menu, cart, checkout)
 ├── README.md               ← File này
 ├── images/                 ← Ảnh và banner (đều là .jpg / .png)
 │   ├── yokool-logo.png     ← Logo thương hiệu (nền trong suốt)
-│   ├── banner-1.jpg        ← Banner slide 1 (SL207) — 1600×600
-│   ├── banner-2.jpg        ← Banner slide 2 (OL212) — 1600×600
-│   ├── banner-3.jpg        ← Banner slide 3 (JP395) — 1600×600
+│   ├── banner-1.jpg        ← Banner slide 1 — 1600×600
+│   ├── banner-2.jpg        ← Banner slide 2 — 1600×600
+│   ├── banner-3.jpg        ← Banner slide 3 — 1600×600
 │   ├── product-sl207.jpg   ← Ảnh sản phẩm SL207 — 800×800
 │   ├── product-ol212.jpg   ← Ảnh sản phẩm OL212 — 800×800
 │   ├── product-jp395.jpg   ← Ảnh sản phẩm JP395 — 800×800
@@ -26,6 +27,62 @@ yokool/
     ├── jp395.html
     └── rc502.html
 ```
+
+## Tính năng e-commerce (v3.0)
+
+### Giỏ hàng (localStorage)
+- Click "Thêm vào giỏ hàng" trên trang sản phẩm → toast thông báo, badge cart icon update
+- Click cart icon ở header → drawer trượt từ phải vào hiển thị giỏ hàng
+- Trong drawer: tăng/giảm số lượng, xoá item, xem tổng tiền
+- Click "Thanh toán" trong drawer → đi đến checkout.html với toàn bộ cart
+
+### Mua ngay (skip cart)
+- Click "Mua ngay" trên trang sản phẩm → đi thẳng đến checkout.html chỉ với 1 sản phẩm đó
+- Cart hiện tại không bị ảnh hưởng (lưu sessionStorage riêng)
+
+### Trang Checkout
+- Form thông tin nhận hàng: Họ tên, SĐT, Email, Tỉnh/Thành, Địa chỉ, Ghi chú
+- Validation: tên/sđt/địa chỉ bắt buộc, SĐT đúng định dạng VN (0xxxxxxxxx)
+- Order summary sidebar: list items, tổng tiền, miễn phí ship
+- Phương thức thanh toán: COD only (Thanh toán khi nhận hàng)
+- Click "Đặt hàng" → modal "Đặt hàng thành công" hiện ra với mã đơn
+
+### Mã đơn hàng tự sinh
+Format: `YK-YYMMDD-XXXX` (ví dụ: `YK-260517-3829`)
+
+### Đơn hàng lưu ở đâu?
+Hiện đang lưu vào `localStorage.yokool_orders_v1`. Mở Console (F12) gõ:
+```javascript
+JSON.parse(localStorage.getItem('yokool_orders_v1'))
+```
+
+## ⚠️ Quan trọng: cần tích hợp backend để nhận đơn thật
+
+Hiện tại đơn hàng **chỉ lưu trên máy khách hàng** (localStorage trong browser của họ). Để Jay nhận được đơn, cần kết nối backend. 3 lựa chọn từ dễ đến chuyên nghiệp:
+
+### Cách 1: Formspree (khuyến nghị cho mới bắt đầu)
+1. Lên https://formspree.io → đăng ký free (50 đơn/tháng)
+2. Tạo form, lấy URL endpoint kiểu `https://formspree.io/f/abc123`
+3. Mở `script.js`, tìm comment `TODO Jay: integrate real backend here`
+4. Thay bằng:
+```javascript
+fetch('https://formspree.io/f/abc123', {
+  method: 'POST',
+  body: JSON.stringify(order),
+  headers: { 'Content-Type': 'application/json', Accept: 'application/json' }
+}).catch(err => console.error('Order send failed:', err));
+```
+5. Mỗi đơn sẽ vào email của Jay
+
+### Cách 2: EmailJS
+Tương tự nhưng dùng client-side gửi qua Gmail/Outlook. Free 200 đơn/tháng. Setup phức tạp hơn Formspree một chút.
+
+### Cách 3: Cloudflare Worker (chuyên nghiệp nhất, miễn phí trên free tier)
+Vì site đã host trên Cloudflare Pages, Jay có thể tạo Worker để nhận đơn, lưu vào D1 database hoặc gửi email/Telegram. Setup phức tạp nhất nhưng scale tốt nhất, không phụ thuộc bên thứ 3.
+
+## Đổi giá sản phẩm
+
+Mở từng file `products/*.html`, tìm `data-price="..."` và `price-current">...</span>`. Sửa cả 2 chỗ trong cùng file. Có 4 button có data-price ở mỗi trang (Mua ngay + Thêm vào giỏ + related products ở cuối) — sửa tất.
 
 ## Cấu trúc menu
 
