@@ -676,6 +676,52 @@
   }
   initCheckout();
 
+  // ============ FLOATING CONTACT WIDGET ============
+  // Inject the contact widget on every page automatically.
+  // Update the 3 links below with Yokool's real channels.
+  const CONTACT_CONFIG = {
+    messenger: 'https://m.me/yokool',           // ← Jay: thay bằng m.me/<facebook-page-username>
+    zalo: 'https://zalo.me/yokool',             // ← Jay: thay bằng zalo.me/<số điện thoại Zalo OA>
+    phone: '+84900000000',                      // ← Jay: thay bằng hotline thật (giữ định dạng +84...)
+    phoneDisplay: '0900 000 000',               // ← Jay: cách hiển thị tooltip
+  };
+
+  function injectContactWidget() {
+    if (document.querySelector('.contact-widget')) return;
+
+    const widget = document.createElement('div');
+    widget.className = 'contact-widget';
+    widget.setAttribute('aria-label', 'Liên hệ Yokool');
+    widget.innerHTML = `
+      <a href="${CONTACT_CONFIG.messenger}" target="_blank" rel="noopener noreferrer"
+        class="contact-widget-btn contact-widget-btn--messenger"
+        aria-label="Nhắn tin Messenger">
+        <span class="contact-widget-label">Nhắn tin Messenger</span>
+        <svg class="contact-widget-icon" viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M12 2C6.477 2 2 6.145 2 11.259c0 2.913 1.451 5.512 3.726 7.21V22l3.405-1.869c.91.252 1.875.388 2.869.388 5.523 0 10-4.144 10-9.259C22 6.145 17.523 2 12 2zm.994 12.467l-2.546-2.715-4.971 2.715 5.466-5.806 2.609 2.715 4.908-2.715-5.466 5.806z"/>
+        </svg>
+      </a>
+
+      <a href="${CONTACT_CONFIG.zalo}" target="_blank" rel="noopener noreferrer"
+        class="contact-widget-btn contact-widget-btn--zalo"
+        aria-label="Chat qua Zalo">
+        <span class="contact-widget-label">Chat Zalo</span>
+        <img src="${pathPrefix()}images/zalo-logo.png" alt="Zalo" class="contact-widget-zalo-img">
+      </a>
+
+      <a href="tel:${CONTACT_CONFIG.phone}"
+        class="contact-widget-btn contact-widget-btn--phone"
+        aria-label="Gọi hotline ${CONTACT_CONFIG.phoneDisplay}">
+        <span class="contact-widget-label">Gọi hotline · ${CONTACT_CONFIG.phoneDisplay}</span>
+        <svg class="contact-widget-icon" viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M6.62 10.79c1.44 2.83 3.76 5.14 6.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1-9.39 0-17-7.61-17-17 0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.11.35.03.74-.25 1.02l-2.2 2.2z"/>
+        </svg>
+      </a>
+    `;
+    document.body.appendChild(widget);
+  }
+  injectContactWidget();
+
   // ============ CONSOLE EASTER EGG ============
   if (typeof console !== 'undefined' && console.log) {
     console.log('%c YOKOOL ', 'background:#DC143B;color:#fff;font-weight:bold;font-size:14px;padding:4px 8px;');

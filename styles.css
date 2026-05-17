@@ -2300,6 +2300,174 @@ body.cart-drawer-open {
   flex-wrap: wrap;
 }
 
+/* ============ FLOATING CONTACT WIDGET ============ */
+.contact-widget {
+  position: fixed;
+  bottom: calc(24px + env(safe-area-inset-bottom, 0px));
+  right: calc(24px + env(safe-area-inset-right, 0px));
+  z-index: 90;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  transition: opacity 0.3s var(--ease), visibility 0.3s var(--ease), transform 0.3s var(--ease);
+}
+
+.contact-widget-btn {
+  position: relative;
+  width: 54px;
+  height: 54px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.18);
+  transition: transform 0.3s var(--ease), box-shadow 0.3s var(--ease);
+  text-decoration: none;
+}
+
+.contact-widget-btn:hover {
+  transform: scale(1.08);
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.22);
+}
+
+.contact-widget-btn--messenger {
+  background: linear-gradient(135deg, #00C6FF 0%, #0068FF 50%, #B829FF 100%);
+}
+
+.contact-widget-btn--zalo {
+  background: #fff;
+  border: 1px solid rgba(0, 104, 255, 0.12);
+}
+
+.contact-widget-btn--phone {
+  background: var(--brand);
+}
+
+.contact-widget-icon {
+  width: 26px;
+  height: 26px;
+  fill: #fff;
+}
+
+.contact-widget-zalo-img {
+  width: 44px;
+  height: 44px;
+  display: block;
+  object-fit: contain;
+}
+
+/* Tooltip label (desktop hover) */
+.contact-widget-label {
+  position: absolute;
+  right: calc(100% + 14px);
+  top: 50%;
+  background: rgba(15, 15, 15, 0.92);
+  color: #fff;
+  padding: 8px 14px;
+  font-size: 13px;
+  font-weight: 500;
+  white-space: nowrap;
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transform: translateY(-50%) translateX(8px);
+  transition: opacity 0.2s var(--ease), visibility 0.2s var(--ease), transform 0.2s var(--ease);
+  font-family: var(--font-body);
+}
+
+.contact-widget-label::after {
+  content: "";
+  position: absolute;
+  left: 100%;
+  top: 50%;
+  transform: translateY(-50%);
+  border: 6px solid transparent;
+  border-left-color: rgba(15, 15, 15, 0.92);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .contact-widget-btn:hover .contact-widget-label {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(-50%) translateX(0);
+  }
+}
+
+/* Pulse ring on phone button (attention grabber, subtle) */
+.contact-widget-btn--phone::before,
+.contact-widget-btn--phone::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  border: 2px solid var(--brand);
+  animation: contactPulse 2.5s ease-out infinite;
+  pointer-events: none;
+}
+
+.contact-widget-btn--phone::after {
+  animation-delay: 1.25s;
+}
+
+@keyframes contactPulse {
+  0% {
+    opacity: 0.7;
+    transform: scale(0.9);
+  }
+  80% {
+    opacity: 0;
+    transform: scale(1.6);
+  }
+  100% {
+    opacity: 0;
+    transform: scale(1.6);
+  }
+}
+
+/* Hide widget when cart drawer is open */
+body.cart-drawer-open .contact-widget {
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transform: translateX(20px);
+}
+
+/* Mobile: smaller, no tooltip */
+@media (max-width: 768px) {
+  .contact-widget {
+    bottom: calc(16px + env(safe-area-inset-bottom, 0px));
+    right: calc(16px + env(safe-area-inset-right, 0px));
+    gap: 10px;
+  }
+
+  .contact-widget-btn {
+    width: 48px;
+    height: 48px;
+  }
+
+  .contact-widget-icon {
+    width: 22px;
+    height: 22px;
+  }
+
+  .contact-widget-zalo-img {
+    width: 38px;
+    height: 38px;
+  }
+
+  .contact-widget-label {
+    display: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .contact-widget-btn--phone::before,
+  .contact-widget-btn--phone::after {
+    animation: none;
+  }
+}
+
 /* ============ ANIMATIONS ============ */
 @keyframes slideUp {
   to {
