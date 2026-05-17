@@ -571,7 +571,7 @@
 
     <div class="container footer-bottom">
       <p>© 2026 YOKOOL. Made in Vietnam.</p>
-      <p class="footer-meta">v3.4 — B2B menu + catalogue</p>
+      <p class="footer-meta">v3.4 — B2B</p>
     </div>
   </footer>
 
@@ -612,13 +612,16 @@
 
   <script src="script.js"></script>
 
-  <!-- B2B form handler - simple, separate from main checkout -->
+  <!-- B2B form handler — gửi inquiry lên admin API -->
   <script>
     (function () {
       const form = document.getElementById('b2bForm');
       if (!form) return;
 
-      form.addEventListener('submit', (e) => {
+      // 👉 SỬA URL NÀY khi setup custom domain (admin.yokool.vn)
+      const API_BASE = 'https://yokool-admin.pages.dev';
+
+      form.addEventListener('submit', async (e) => {
         e.preventDefault();
         const data = new FormData(form);
         const required = ['company', 'name', 'email', 'phone', 'quantity'];
@@ -635,50 +638,67 @@
           }
         });
 
-        const phone = (data.get('phone') || '').trim();
+        const phone = (data.get('phone') || '').trim().replace(/\s+/g, '');
         if (phone && !/^0\d{9,10}$/.test(phone)) {
           form.elements.phone?.classList.add('is-invalid');
           window.yokoolToast && window.yokoolToast('Số điện thoại không đúng định dạng', 'info');
           return;
         }
-
         if (!isValid) {
           window.yokoolToast && window.yokoolToast('Vui lòng điền đầy đủ thông tin', 'info');
           return;
         }
 
-        const products = data.getAll('products').join(', ') || 'Chưa chọn';
-        const inquiry = {
-          createdAt: new Date().toISOString(),
-          company: data.get('company'),
-          contactName: data.get('name'),
-          position: data.get('position') || '',
-          email: data.get('email'),
-          phone: data.get('phone'),
-          products: products,
-          quantity: data.get('quantity'),
-          deadline: data.get('deadline') || '',
-          purpose: data.get('purpose') || '',
-          note: data.get('note') || '',
+        const submitBtn = form.querySelector('button[type="submit"]');
+        const oldHTML = submitBtn.innerHTML;
+        submitBtn.disabled = true;
+        submitBtn.innerHTML = 'Đang gửi...';
+
+        const payload = {
+          company:       data.get('company'),
+          contact_name:  data.get('name'),
+          position:      data.get('position') || '',
+          email:         data.get('email'),
+          phone:         phone,
+          products:      data.getAll('products'),
+          quantity:      data.get('quantity'),
+          deadline:      data.get('deadline') || '',
+          purpose:       data.get('purpose') || '',
+          customer_note: data.get('note') || '',
         };
 
-        // Save to localStorage for Jay to debug
+        // Backup vào localStorage (phòng khi API lỗi)
         try {
           const all = JSON.parse(localStorage.getItem('yokool_b2b_inquiries') || '[]');
-          all.unshift(inquiry);
+          all.unshift({ ...payload, createdAt: new Date().toISOString() });
           localStorage.setItem('yokool_b2b_inquiries', JSON.stringify(all.slice(0, 50)));
         } catch (err) {}
 
-        console.log('[Yokool B2B inquiry]', inquiry);
+        try {
+          const res = await fetch(API_BASE + '/api/inquiries', {
+            method: 'POST',
+            headers: { 'content-type': 'application/json' },
+            body: JSON.stringify(payload),
+          });
+          const result = await res.json().catch(() => ({}));
 
-        // TODO: integrate Formspree / Cloudflare Worker to receive these
-        window.yokoolToast && window.yokoolToast('Đã gửi yêu cầu! Đội B2B sẽ liên hệ trong 24h');
-        form.reset();
-        form.scrollIntoView({ behavior: 'smooth', block: 'start' });
+          if (!res.ok) throw new Error(result.error || 'Gửi thất bại');
+
+          console.log('[Yokool B2B inquiry]', result);
+          window.yokoolToast && window.yokoolToast('Đã gửi yêu cầu! Đội B2B sẽ liên hệ trong 24h', 'success');
+          form.reset();
+          form.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        } catch (err) {
+          console.error('[B2B submit error]', err);
+          window.yokoolToast && window.yokoolToast('Lỗi gửi: ' + err.message + '. Vui lòng gọi hotline B2B.', 'info');
+        } finally {
+          submitBtn.disabled = false;
+          submitBtn.innerHTML = oldHTML;
+        }
       });
 
       form.querySelectorAll('input, textarea, select').forEach(input => {
-        input.addEventListener('input', () => input.classList.remove('is-invalid'));
+        input.addEventListener('input',  () => input.classList.remove('is-invalid'));
         input.addEventListener('change', () => input.classList.remove('is-invalid'));
       });
     })();
