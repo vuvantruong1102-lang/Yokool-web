@@ -2337,7 +2337,7 @@ body.cart-drawer-open {
 
 .contact-widget-btn--zalo {
   background: #fff;
-  border: 1px solid rgba(0, 104, 255, 0.12);
+  border: 1.5px solid rgba(0, 104, 255, 0.25);
 }
 
 .contact-widget-btn--phone {
@@ -2350,11 +2350,10 @@ body.cart-drawer-open {
   fill: #fff;
 }
 
-.contact-widget-zalo-img {
+.contact-widget-zalo-svg {
   width: 44px;
   height: 44px;
   display: block;
-  object-fit: contain;
 }
 
 /* Tooltip label (desktop hover) */
@@ -2451,7 +2450,7 @@ body.cart-drawer-open .contact-widget {
     height: 22px;
   }
 
-  .contact-widget-zalo-img {
+  .contact-widget-zalo-svg {
     width: 38px;
     height: 38px;
   }
