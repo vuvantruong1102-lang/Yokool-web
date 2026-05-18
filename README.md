@@ -216,4 +216,4 @@ A: Đợi 30-60 giây, mở incognito để bypass cache, hoặc vào Cloudflare
 
 ---
 
-© 2026 YOKOOL — Made in Vietnam · v2.0 light theme · Powered by Cloudflare Pages
+© 2026 YOKOOL —  · v2.0 light theme · Powered by Cloudflare Pages
